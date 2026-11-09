@@ -1,0 +1,660 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* 表面层级：桌面底 → 窗口 → 面板 → 悬停 */
+  --bg: #e8ebf0;
+  --surface: #ffffff;
+  --surface-2: #f5f6f9;
+  --surface-3: #eceff4;
+  --head: #f2f4f7;
+  --zebra: #fafbfc;
+  --skeleton: #e6e9ee;
+  --quote: #f5f7fa;
+
+  /* 线条：发丝级，1px 就是 1px */
+  --line: #e4e7ec;
+  --line-strong: #cbd1da;
+
+  /* 文字 */
+  --ink: #14181f;
+  --ink-2: #49515f;
+  --ink-3: #838c9b;
+
+  /* 强调：系统蓝，唯一主色 */
+  --accent: #0a63c9;
+  --accent-hover: #0854a9;
+  --accent-soft: #e8f0fb;
+  --accent-line: #b6d0ef;
+
+  /* 语义色 */
+  --ok: #17794a;
+  --warn: #94600a;
+  --danger: #c0392b;
+
+  /* 字体：全站系统 UI 字体，不留衬线 */
+  --font-sans: 'Segoe UI Variable Text', 'Segoe UI', system-ui, -apple-system, 'Microsoft YaHei UI',
+    'Microsoft YaHei', 'PingFang SC', 'Hiragino Sans GB', sans-serif;
+  --font-serif: var(--font-sans);
+  --font-mono: 'Cascadia Mono', 'Consolas', 'SF Mono', ui-monospace, monospace;
+
+  /* 半径：小、克制 */
+  --r-btn: 4px;
+  --r: 6px;
+  --r-win: 8px;
+
+  /* 阴影：一层贴地、一层扩散，不外扩发光 */
+  --shadow-win: 0 1px 2px rgba(16, 24, 40, 0.06), 0 6px 16px -8px rgba(16, 24, 40, 0.16);
+  --shadow-win-focus: 0 1px 2px rgba(16, 24, 40, 0.08), 0 14px 32px -14px rgba(16, 24, 40, 0.28);
+  --shadow-pop: 0 0 0 1px rgba(16, 24, 40, 0.07), 0 8px 22px -8px rgba(16, 24, 40, 0.22);
+  --shadow-float: 0 0 0 1px rgba(16, 24, 40, 0.07), 0 12px 30px -10px rgba(16, 24, 40, 0.24);
+  --focus-ring: 0 0 0 2px #fff, 0 0 0 4px rgba(10, 99, 201, 0.4);
+}
+
+@layer base {
+  html,
+  body,
+  #root {
+    height: 100%;
+  }
+
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--font-sans);
+    font-size: 13px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    overflow: hidden;
+  }
+
+  ::selection {
+    background: #cfe1f8;
+  }
+
+  :focus-visible {
+    outline: none;
+    box-shadow: var(--focus-ring);
+    border-radius: var(--r-btn);
+  }
+
+  button {
+    font: inherit;
+  }
+
+  input,
+  textarea,
+  select {
+    font: inherit;
+    color: inherit;
+  }
+
+  /* 细滚动条：常驻很细，悬停才加宽 */
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #c4cad4;
+    border: 3px solid transparent;
+    background-clip: content-box;
+    border-radius: 7px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #a9b1be;
+    background-clip: content-box;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-corner {
+    background: transparent;
+  }
+}
+
+@layer components {
+  .t-h1 {
+    font-size: 14px;
+    line-height: 1.45;
+    font-weight: 600;
+    letter-spacing: 0;
+  }
+
+  .t-h2 {
+    font-size: 13px;
+    line-height: 1.45;
+    font-weight: 600;
+    letter-spacing: 0;
+  }
+
+  .t-body {
+    font-size: 12.5px;
+    line-height: 1.65;
+  }
+
+  .t-meta {
+    font-size: 11px;
+    line-height: 1.5;
+    color: var(--ink-3);
+  }
+
+  .mono {
+    font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
+    font-size: 0.95em;
+  }
+
+  /* 按钮：工具栏尺寸，靠底色变化给反馈，不做位移 */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    height: 26px;
+    padding: 0 9px;
+    border-radius: var(--r-btn);
+    border: 1px solid transparent;
+    font-size: 12px;
+    white-space: nowrap;
+    transition:
+      background 0.1s ease,
+      border-color 0.1s ease,
+      color 0.1s ease;
+  }
+
+  .btn:disabled {
+    cursor: not-allowed;
+    opacity: 0.4;
+  }
+
+  .btn-primary {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #fff;
+  }
+  .btn-primary:not(:disabled):hover {
+    background: var(--accent-hover);
+    border-color: var(--accent-hover);
+  }
+  .btn-primary:not(:disabled):active {
+    background: #074a96;
+  }
+
+  .btn-ghost {
+    background: var(--surface);
+    border-color: var(--line-strong);
+    color: var(--ink-2);
+  }
+  .btn-ghost:not(:disabled):hover {
+    background: var(--surface-3);
+    color: var(--ink);
+  }
+
+  .btn-quiet {
+    background: transparent;
+    border-color: transparent;
+    color: var(--ink-2);
+  }
+  .btn-quiet:not(:disabled):hover {
+    background: var(--surface-3);
+    color: var(--ink);
+  }
+
+  .btn-icon {
+    width: 26px;
+    height: 26px;
+    padding: 0;
+  }
+
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    height: 20px;
+    padding: 0 6px;
+    border: 1px solid var(--line);
+    border-radius: 3px;
+    background: var(--surface);
+    color: var(--ink-2);
+    font-size: 11px;
+    line-height: 1;
+    white-space: nowrap;
+    transition:
+      border-color 0.1s ease,
+      background 0.1s ease,
+      color 0.1s ease;
+  }
+  .chip:hover {
+    border-color: var(--line-strong);
+    background: var(--surface-3);
+  }
+
+  .sk {
+    background: var(--skeleton);
+    border-radius: 2px;
+  }
+
+  .hairline {
+    height: 1px;
+    background: var(--line);
+  }
+
+  /* 引用角标 */
+  .cite {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 16px;
+    height: 16px;
+    padding: 0 3px;
+    margin: 0 1px;
+    border-radius: 3px;
+    background: var(--accent-soft);
+    color: var(--accent);
+    border: 1px solid transparent;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    line-height: 1;
+    vertical-align: 1px;
+    cursor: pointer;
+    transition:
+      background 0.1s ease,
+      border-color 0.1s ease;
+  }
+  .cite:hover {
+    border-color: var(--accent-line);
+  }
+  .cite[data-active='true'] {
+    background: var(--accent);
+    color: #fff;
+  }
+
+  .cite-wrap {
+    position: relative;
+    display: inline-block;
+  }
+  .cite-pop {
+    display: none;
+    position: absolute;
+    bottom: calc(100% + 6px);
+    left: 50%;
+    transform: translateX(-50%);
+    width: 250px;
+    max-width: min(250px, 60vw);
+    padding: 7px 9px;
+    border-radius: var(--r);
+    border: 1px solid var(--line-strong);
+    background: var(--surface);
+    box-shadow: var(--shadow-pop);
+    z-index: 30;
+    text-align: left;
+  }
+  .cite-wrap:hover .cite-pop {
+    display: block;
+  }
+
+  /* 摘录 / 推断：靠左侧竖条区分，不铺色块 */
+  .seg-quote {
+    border-left: 2px solid var(--line-strong);
+    padding: 1px 0 1px 9px;
+  }
+  .seg-infer {
+    border-left: 2px solid var(--accent-line);
+    background: var(--accent-soft);
+    padding: 6px 9px;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .mark {
+    background: #ffe9a8;
+    color: inherit;
+    border-radius: 2px;
+    padding: 0 1px;
+  }
+
+  .menu-item {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    gap: 8px;
+    height: 26px;
+    border-radius: 3px;
+    padding: 0 8px;
+    font-size: 12px;
+    color: var(--ink-2);
+    text-align: left;
+    transition: background 0.1s ease;
+  }
+  .menu-item:hover:not(:disabled) {
+    background: var(--accent-soft);
+    color: var(--ink);
+  }
+  .menu-item:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+
+  /* 分段控件：像系统的 tab 切换，边框内嵌 */
+  .seg {
+    display: flex;
+    gap: 0;
+    padding: 2px;
+    background: var(--surface-3);
+    border-radius: 5px;
+  }
+  .seg > button {
+    flex: 1;
+    height: 22px;
+    border-radius: 3px;
+    font-size: 12px;
+    color: var(--ink-3);
+    transition:
+      background 0.1s ease,
+      color 0.1s ease;
+  }
+  .seg > button:hover {
+    color: var(--ink);
+  }
+  .seg > button[data-on='true'] {
+    background: var(--surface);
+    color: var(--ink);
+    box-shadow: 0 1px 1px rgba(16, 24, 40, 0.1);
+  }
+
+  /* 窗口控制钮：未聚焦时压暗，不是隐身 */
+  .win-ctls {
+    opacity: 0.55;
+    transition: opacity 0.1s ease;
+  }
+  .win:hover .win-ctls,
+  .win:focus-within .win-ctls {
+    opacity: 1;
+  }
+
+  /* 原生风格的窗口标题栏 */
+  .titlebar {
+    background: var(--surface-2);
+    border-bottom: 1px solid var(--line);
+  }
+
+  /* 状态栏 */
+  .statusbar {
+    background: var(--surface-2);
+    border-top: 1px solid var(--line);
+  }
+
+  /* ---- 流水线：三轨道 ---- */
+
+  .topbar {
+    background: var(--surface);
+    border-bottom: 1px solid var(--line);
+  }
+
+  .pipeline {
+    background: var(--bg);
+  }
+
+  /* 三条轨道按 44 / 32 / 24 分，宽度随容器等比伸缩 */
+  .track {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    background: var(--surface);
+    border-right: 1px solid var(--line);
+    transition: box-shadow 0.12s ease;
+  }
+  .track:nth-child(1) {
+    flex: 45 1 0%;
+  }
+  .track:nth-child(2) {
+    flex: 29 1 0%;
+  }
+  .track:nth-child(3) {
+    flex: 26 1 0%;
+    border-right: none;
+  }
+
+  /* 聚焦中的轨道：左侧一道实边，不做发光 */
+  .track[data-focused='true'] {
+    box-shadow: inset 2px 0 0 var(--accent);
+  }
+
+  .track-head {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    height: 38px;
+    padding: 0 12px;
+    flex-shrink: 0;
+    background: var(--surface-2);
+    border-bottom: 1px solid var(--line);
+  }
+
+  .track-label {
+    font-size: 13px;
+    font-weight: 650;
+    letter-spacing: 0.02em;
+    color: var(--ink);
+  }
+
+  .track-count {
+    font-size: 11px;
+    color: var(--ink-3);
+  }
+
+  /* 流向徽标：骑在轨道分界线上，读起来就是「下一步」 */
+  .track-flow {
+    position: absolute;
+    right: -8px;
+    top: 50%;
+    z-index: 3;
+    display: grid;
+    width: 16px;
+    height: 16px;
+    place-items: center;
+    transform: translateY(-50%);
+    border: 1px solid var(--line-strong);
+    border-radius: 50%;
+    background: var(--surface);
+    color: var(--ink-3);
+  }
+
+  .track-body {
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  /* 轨道内的操作条 */
+  .track-bar {
+    background: var(--surface);
+    border-bottom: 1px solid var(--line);
+  }
+}
+
+@keyframes drawerIn {
+  from {
+    opacity: 0;
+    transform: translateX(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.animate-drawer-in {
+  animation: drawerIn 0.14s ease-out;
+}
+
+@keyframes winIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes peekIn {
+  from {
+    opacity: 0;
+    transform: translateX(8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes railIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes riseIn {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes skPulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+@keyframes caret {
+  0%,
+  49% {
+    opacity: 1;
+  }
+  50%,
+  100% {
+    opacity: 0;
+  }
+}
+
+.animate-win-in {
+  animation: winIn 0.1s linear;
+}
+.animate-peek-in {
+  animation: peekIn 0.12s ease-out;
+}
+.animate-rail-in {
+  animation: railIn 0.12s linear;
+}
+.animate-rise-in {
+  animation: riseIn 0.12s ease-out;
+}
+.animate-sk {
+  animation: skPulse 2s ease-in-out infinite;
+}
+.animate-caret {
+  animation: caret 1s steps(1) infinite;
+}
+
+/* ---------- 窗口行为 ---------- */
+
+.win {
+  transition:
+    left 0.12s ease-out,
+    top 0.12s ease-out,
+    width 0.12s ease-out,
+    height 0.12s ease-out,
+    box-shadow 0.12s ease,
+    border-color 0.12s ease;
+}
+
+.win.dragging {
+  transition:
+    box-shadow 0.12s ease,
+    border-color 0.12s ease;
+}
+
+.card-hover {
+  transition:
+    background 0.1s ease,
+    border-color 0.1s ease;
+}
+.card-hover:hover {
+  background: var(--surface-2);
+  border-color: var(--line-strong);
+}
+
+/* 列表行：只变底色，不位移、不浮起 */
+.list-row {
+  transition: background 0.08s ease;
+}
+.list-row:hover {
+  background: var(--surface-2);
+}
+.list-row[data-on='true'] {
+  background: var(--accent-soft);
+}
+
+/* 旧的装饰动效保留类名，但不再生效（不铺噪点、不跟随指针、不滚走马灯） */
+.spotlight {
+  background-image: none;
+}
+.grain::before {
+  content: none;
+}
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: none;
+}
+
+/* 发送按钮蓄力 */
+.arming::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.25);
+  transform-origin: left center;
+  animation: arm 0.5s ease-out forwards;
+}
+@keyframes arm {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+/* 引用点击涟漪 */
+.ripple {
+  animation: ripple 0.4s ease-out;
+}
+@keyframes ripple {
+  from {
+    box-shadow: 0 0 0 0 rgba(10, 99, 201, 0.3);
+  }
+  to {
+    box-shadow: 0 0 0 8px rgba(10, 99, 201, 0);
+  }
+}
+
+.drop-hint {
+  animation: riseIn 0.12s ease-out;
+}
